@@ -71,6 +71,8 @@ func (operation *Operation) ParseComment(comment string) error {
 		operation.Nickname = strings.TrimSpace(commentLine[len(attribute):])
 	case "@description":
 		operation.Summary = strings.TrimSpace(commentLine[len(attribute):])
+	case "@notes":
+		operation.Notes = strings.TrimSpace(commentLine[len(attribute):])
 	case "@success", "@failure":
 		if err := operation.ParseResponseComment(strings.TrimSpace(commentLine[len(attribute):])); err != nil {
 			return err
@@ -184,6 +186,8 @@ func (operation *Operation) ParseAcceptComment(commentLine string) error {
 			operation.Consumes = append(operation.Consumes, ContentTypeHtml)
 		case "mpfd", "multipart/form-data":
 			operation.Consumes = append(operation.Consumes, ContentTypeMultiPartFormData)
+		default:
+			operation.Consumes = append(operation.Consumes, a)
 		}
 	}
 	return nil
@@ -204,6 +208,8 @@ func (operation *Operation) ParseProduceComment(commentLine string) error {
 			operation.Produces = append(operation.Produces, ContentTypeHtml)
 		case "mpfd", "multipart/form-data":
 			operation.Produces = append(operation.Produces, ContentTypeMultiPartFormData)
+		default:
+			operation.Produces = append(operation.Produces, a)
 		}
 	}
 	return nil
