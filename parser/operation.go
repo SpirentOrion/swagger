@@ -18,7 +18,7 @@ type Operation struct {
 	Notes            string            `json:"notes,omitempty"`
 	Parameters       []Parameter       `json:"parameters,omitempty"`
 	ResponseMessages []ResponseMessage `json:"responseMessages,omitempty"`
-	Consumes         []string          `json:"-"`
+	Consumes         []string          `json:"consumes,omitempty"`
 	Produces         []string          `json:"produces,omitempty"`
 	Authorizations   []Authorization   `json:"authorizations,omitempty"`
 	Protocols        []Protocol        `json:"protocols,omitempty"`

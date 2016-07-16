@@ -54,7 +54,7 @@ func (parser *Parser) ParseGeneralApiInfo(mainApiFile string) {
 	if err != nil {
 		log.Fatalf("Can not parse general API information: %v\n", err)
 	}
-	
+
 	parser.Listing.BasePath = "{{.}}"
 	parser.Listing.SwaggerVersion = SwaggerVersion
 	if fileTree.Comments != nil {
@@ -223,6 +223,20 @@ func (parser *Parser) ParseApi(packageNames string) {
 	}
 	for _, packageName := range packages {
 		parser.ParseApiDescription(packageName)
+	}
+	for _, api := range parser.TopLevelApis {
+		for _, model := range api.Models {
+			modelNameParts := strings.Split(model.Id, ".")
+			packageName := strings.Join(modelNameParts[0:len(modelNameParts)-1], ".")
+			for _, property := range model.Properties {
+				if property.Type != "array" && !IsBasicType(property.Type) {
+					propertyTypeParts := strings.Split(property.Type, ".")
+					if len(propertyTypeParts) == 1 {
+						property.Type = packageName + "." + property.Type
+					}
+				}
+			}
+		}
 	}
 }
 

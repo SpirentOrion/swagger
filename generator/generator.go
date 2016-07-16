@@ -82,6 +82,11 @@ func generateSwaggerUiFiles(parser *parser.Parser, outputSpec string) error {
 		return fmt.Errorf("Can not create the master index.json file: %v\n", err)
 	}
 	defer fd.Close()
+
+	for _,apiRef := range parser.Listing.Apis {
+		apiRef.Path = apiRef.Path + "/index.json"
+	}
+
 	fd.WriteString(string(parser.GetResourceListingJson()))
 
 	for apiKey, apiDescription := range parser.TopLevelApis {
@@ -139,7 +144,7 @@ func Run(params Params) error {
 	//Support gopaths with multiple directories
 	dirs := strings.Split(gopath, ":")
 	if runtime.GOOS == "windows" {
-        	dirs = strings.Split(gopath, ";")
+		dirs = strings.Split(gopath, ";")
 	}
 	found := false
 	for _, d := range dirs {
