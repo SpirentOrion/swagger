@@ -221,30 +221,35 @@ func NewModelProperty() *ModelProperty {
 	return &ModelProperty{}
 }
 
+type TypeFormatItem struct {
+	Type string
+	Format string
+}
+
 // refer to builtin.go
-var basicTypes = map[string]bool{
-	"bool":       true,
-	"uint":       true,
-	"uint8":      true,
-	"uint16":     true,
-	"uint32":     true,
-	"uint64":     true,
-	"int":        true,
-	"int8":       true,
-	"int16":      true,
-	"int32":      true,
-	"int64":      true,
-	"float32":    true,
-	"float64":    true,
-	"string":     true,
-	"complex64":  true,
-	"complex128": true,
-	"byte":       true,
-	"rune":       true,
-	"uintptr":    true,
-	"error":      true,
-	"Time":       true,
-	"file":       true,
+var basicTypes = map[string]TypeFormatItem{
+	"bool":       {"boolean", ""},
+	"uint":       {"integer", "int32"},
+	"uint8":      {"integer", "int32"},
+	"uint16":     {"integer", "int32"},
+	"uint32":     {"integer", "int32"},
+	"uint64":     {"integer", "int64"},
+	"int":        {"integer", "int32"},
+	"int8":       {"integer", "int32"},
+	"int16":      {"integer", "int32"},
+	"int32":      {"integer", "int32"},
+	"int64":      {"integer", "int64"},
+	"float32":    {"number", "float"},
+	"float64":    {"number", "double"},
+	"string":     {"string", ""},
+	"complex64":  {"number", "double"},
+	"complex128": {"number", "double"},
+	"byte":       {"string", "byte"},
+	"rune":       {"integer", "int32"},
+	"uintptr":    {"integer", "int32"},
+	"error":      {"string", ""},
+	"Time":       {"string", ""},
+	"file":       {"file", "file"},
 }
 
 var typeDefTranslations = map[string]string{}

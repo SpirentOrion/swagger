@@ -486,6 +486,15 @@ func (parser *Parser) isIgnoredPackage(packageName string) bool {
 	return packageName == "C" || r.MatchString(packageName) || matched
 }
 
+func (parser *Parser) GetBasicTypeFormat(typeName string) (bool, string, string) {
+	tf, ok := basicTypes[typeName]
+	if ok {
+		return ok, tf.Type, tf.Format
+	} else {
+		return ok, "", ""
+	}
+}
+
 func ParserFileFilter(info os.FileInfo) bool {
 	name := info.Name()
 	return !info.IsDir() && !strings.HasPrefix(name, ".") && strings.HasSuffix(name, ".go") && !strings.HasSuffix(name, "_test.go")

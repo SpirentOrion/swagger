@@ -83,6 +83,27 @@ func generateSwaggerUiFiles(parser *parser.Parser, outputSpec string) error {
 	}
 	defer fd.Close()
 
+	for _, apiDecl := range parser.TopLevelApis {
+		for _,model := range apiDecl.Models {
+			for _,property := range model.Properties {
+				if ok, t, f := parser.GetBasicTypeFormat(property.Type); ok {
+					property.Type = t
+					property.Format = f
+				}
+			}
+		}
+		for _,api := range apiDecl.Apis {
+			for _,operation := range api.Operations {
+				for _,parameter := range operation.Parameters {
+					if ok, t, f := parser.GetBasicTypeFormat(parameter.Type); ok {
+						parameter.Type = t
+						parameter.Format = f
+					}
+				}
+			}
+		}
+	}
+
 	for _,apiRef := range parser.Listing.Apis {
 		apiRef.Path = apiRef.Path + "/index.json"
 	}
